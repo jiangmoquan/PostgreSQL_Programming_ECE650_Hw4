@@ -1,6 +1,6 @@
 #include <iostream>
 #include <pqxx/pqxx>
-
+#include <string>
 #include "exerciser.h"
 
 using namespace std;
@@ -8,9 +8,9 @@ using namespace pqxx;
 
 
 void DropTables(connection *C) {
-  char * drop_sql = "DROP TABLE IF EXISTS PLAYER, TEAM, STATE, COLOR CASCADE;";
+  string drop_sql = "DROP TABLE IF EXISTS PLAYER, TEAM, STATE, COLOR CASCADE;";
 
-  work W(C);
+  work W(*C);
   W.exec(drop_sql);
   W.commit();
   cout << "Exsiting tables have been dropped." << endl;
@@ -23,37 +23,37 @@ void DropTables(connection *C) {
 
 
 
-void CreateTables() {
-  char * create_player_sql = "CREATE TABLE PLAYER(" \
-  "PLAYER_ID    SERIAL  PRIMARY KEY," \
-  "TEAM_ID      INT     REFERENCES TEAM(TEAM_ID)," \
-  "UNIFORM_NUM  INT     NOT NULL," \
-  "FIRST_NAME   TEXT    NOT NULL," \
-  "LAST_NAME    TEXT    NOT NULL," \
-  "MPG          REAL    NOT NULL," \ //?
-  "PPG          REAL    NOT NULL," \ //?
-  "RPG          REAL    NOT NULL," \ //?
-  "APG          REAL    NOT NULL," \ //?
-  "SPG          REAL    NOT NULL," \
+void CreateTables(connection *C) {
+  string create_player_sql = "CREATE TABLE PLAYER(" 
+  "PLAYER_ID    SERIAL  PRIMARY KEY," 
+  "TEAM_ID      INT     REFERENCES TEAM(TEAM_ID)," 
+  "UNIFORM_NUM  INT     NOT NULL," 
+  "FIRST_NAME   TEXT    NOT NULL," 
+  "LAST_NAME    TEXT    NOT NULL," 
+  "MPG          REAL    NOT NULL,"  //?
+  "PPG          REAL    NOT NULL,"  //?
+  "RPG          REAL    NOT NULL,"  //?
+  "APG          REAL    NOT NULL,"  //?
+  "SPG          REAL    NOT NULL," 
   "BPG          REAL    NOT NULL);";
 
-  char * create_team_sql = "CREATE TABLE TEAM(" \
-  "TEAM_ID      SERIAL  PRIMARY KEY," \
-  "NAME         TEXT    NOT NULL," \
-  "STATE_ID     INT     REFERENCES STATE (STATE_ID)," \
-  "COLOR_ID     INT     REFERENCES COLOR (COLOR_ID)," \
-  "WINS         INT     NOT NULL," \
-  "LOSSES       INT     NOT NULL);"; \
+  string create_team_sql = "CREATE TABLE TEAM(" 
+  "TEAM_ID      SERIAL  PRIMARY KEY," 
+  "NAME         TEXT    NOT NULL," 
+  "STATE_ID     INT     REFERENCES STATE (STATE_ID)," 
+  "COLOR_ID     INT     REFERENCES COLOR (COLOR_ID)," 
+  "WINS         INT     NOT NULL," 
+  "LOSSES       INT     NOT NULL);"; 
 
-  char * create_state_sql = "CREATE TABLE STATE(" \
-  "STATE_ID     SERIAL  PRIMARY KEY," \
+  string create_state_sql = "CREATE TABLE STATE(" 
+  "STATE_ID     SERIAL  PRIMARY KEY," 
   "NAME         TEXT    NOT NULL);";
 
-  char * create_color_sql ="CREATE TABLE COLOR(" \
-  "COLOR_ID     SERIAL  PRIMARY KEY," \
+  string create_color_sql ="CREATE TABLE COLOR(" 
+  "COLOR_ID     SERIAL  PRIMARY KEY," 
   "NAME         TEXT    NOT NULL);";
 
-  work W(C);
+  work W(*C);
   W.exec(create_player_sql);
   W.exec(create_team_sql);
   W.exec(create_state_sql);
@@ -64,7 +64,7 @@ void CreateTables() {
 }
 
 
-void LoadFiles() {
+void LoadFiles(connection *C) {
 
 }
 
