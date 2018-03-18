@@ -17,12 +17,6 @@ void DropTables(connection *C) {
 }
 
 
-
-
-
-
-
-
 void CreateTables(connection *C) {
   string create_player_sql = "CREATE TABLE PLAYER(" 
   "PLAYER_ID    SERIAL  PRIMARY KEY," 
@@ -54,10 +48,10 @@ void CreateTables(connection *C) {
   "NAME         TEXT    NOT NULL);";
 
   work W(*C);
-  W.exec(create_player_sql);
-  W.exec(create_team_sql);
   W.exec(create_state_sql);
   W.exec(create_color_sql);
+  W.exec(create_team_sql);
+  W.exec(create_player_sql);
   W.commit();
 
   cout << "Create tables successfully." << endl;
