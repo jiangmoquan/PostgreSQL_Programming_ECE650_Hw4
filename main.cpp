@@ -58,8 +58,86 @@ void CreateTables(connection *C) {
 }
 
 
-void LoadFiles(connection *C) {
+void LoadPlayerFile(connection *C) {
+  ifstream ifs("player.txt", ifstream::in);
+  string line;
+  
+  int id, team_id, uniform_num, mpg, ppg, rpg, apg;
+  string first_name, last_name;
+  double spg, bpg;
 
+  while (getline(ifs, line)) {
+    if (!line.empty()) {
+      stringstream ss(line);
+      ss >> id >> team_id >> uniform_num >> first_name >> last_name >> mpg >> ppg >> rpg >> apg >> spg >> bpg;
+      add_player(C,team_id, uniform_num, first_name, last_name, mpg, ppg, rpg, apg, spg, bpg);
+    }
+  }
+
+  ifs.close();
+}
+
+
+void LoadTeamFile(connection *C) {
+  ifstream ifs("team.txt", ifstream::in);
+  string line;
+  
+  int team_id, state_id, color_id, wins, losses;
+  string name;
+
+  while (getline(ifs, line)) {
+    if (!line.empty()) {
+      stringstream ss(line);
+      ss >> team_id >> name >> state_id >> color_id >> wins >> losses;
+      add_team(C, name, state_id, color_id, wins, losses);
+    }
+  }
+
+  ifs.close();
+}
+
+
+void LoadStateFile(connection *C) {
+  ifstream ifs("state.txt", ifstream::in);
+  string line;
+  
+  int state_id;
+  string name;
+
+  while (getline(ifs, line)) {
+    if (!line.empty()) {
+      stringstream ss(line);
+      ss >> state_id >> name;
+      add_state(C, name);
+    }
+  }
+  ifs.close();
+}
+
+void LoadColorFile(connection *C) {
+  ifstream ifs("color.txt", ifstream::in);
+  string line;
+  
+  int color_id;
+  string name;
+
+  while (getline(ifs, line)) {
+    if (!line.empty()) {
+      stringstream ss(line);
+      ss >> color_id >> name;
+      add_state(C, name);
+    }
+  }
+  ifs.close();
+}
+
+
+void LoadFiles(connection *C) {
+  LoadStateFile(C);
+  LoadColorFile(C);
+  LoadTeamFile(C);
+  LoadPlayerFile(C);
+  cout << "Load files successfully." << endl;
 }
 
 
