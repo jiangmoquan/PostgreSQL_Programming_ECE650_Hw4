@@ -1,6 +1,8 @@
 #include <iostream>
 #include <pqxx/pqxx>
 #include <string>
+#include <sstream>
+#include <fstream>
 #include "exerciser.h"
 
 using namespace std;
@@ -125,7 +127,7 @@ void LoadColorFile(connection *C) {
     if (!line.empty()) {
       stringstream ss(line);
       ss >> color_id >> name;
-      add_state(C, name);
+      add_color(C, name);
     }
   }
   ifs.close();
