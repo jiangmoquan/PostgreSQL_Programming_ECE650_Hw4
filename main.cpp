@@ -26,10 +26,10 @@ void CreateTables(connection *C) {
   "UNIFORM_NUM  INT     NOT NULL," 
   "FIRST_NAME   TEXT    NOT NULL," 
   "LAST_NAME    TEXT    NOT NULL," 
-  "MPG          INT     NOT NULL,"  //?
-  "PPG          INT     NOT NULL,"  //?
-  "RPG          INT     NOT NULL,"  //?
-  "APG          INT     NOT NULL,"  //?
+  "MPG          INT     NOT NULL,"  
+  "PPG          INT     NOT NULL,"  
+  "RPG          INT     NOT NULL,"  
+  "APG          INT     NOT NULL,"  
   "SPG          REAL    NOT NULL," 
   "BPG          REAL    NOT NULL);";
 

@@ -56,36 +56,187 @@ void query1(connection *C,
             int use_spg, double min_spg, double max_spg,
             int use_bpg, double min_bpg, double max_bpg) {
 
+	try {
+		nontransaction N(*C);
+		stringstream sql;
+		boolean first_condition = true;
+		
+		sql << "SELECT * FROM PLAYER ";
+
+		if (use_mpg) {
+			sql << "WHERE MPG >= " << min_mpg << " AND MPG <= " << max_mpg << " ";
+			first_condition = false;
+		}
+
+		if (use_ppg) {
+			if (first_condition) {
+				sql << "WHERE ";
+			} else {
+				sql << " AND ";
+			}
+			sql << " PPG >= " << min_ppg << " AND PPG <= " << max_ppg << " ";
+			first_condition = false;
+		}
 
 
+		if (use_rpg) {
+			if (first_condition) {
+				sql << "WHERE ";
+			} else {
+				sql << " AND ";
+			}
+			sql << " RPG >= " << min_rpg << " AND RPG <= " << max_rpg << " ";
+			first_condition = false;
+		}
+
+		if (use_apg) {
+			if (first_condition) {
+				sql << "WHERE ";
+			} else {
+				sql << " AND ";
+			}
+			sql << " APG >= " << min_apg << " AND APG <= " << max_apg << " ";
+			first_condition = false;
+		}
+
+		if (use_spg) {
+			if (first_condition) {
+				sql << "WHERE ";
+			} else {
+				sql << " AND ";
+			}
+			sql << " SPG >= " << min_spg << " AND SPG <= " << max_spg << " ";
+			first_condition = false;
+		}
+
+		if (use_bpg) {
+			if (first_condition) {
+				sql << "WHERE ";
+			} else {
+				sql << " AND ";
+			}
+			sql << " BPG >= " << min_bpg << " AND BPG <= " << max_bpg << " ";
+			first_condition = false;
+		}
+
+		sql << ";";
+
+		result r = N.exec(sql.str());
 
 
-
+		cout << "PLAYER_ID TEAM_ID UNIFORM_NUM FIRST_NAME LAST_NAME MPG PPG RPG APG SPG BPG" <<endl;
+		for(result::const_iterator c = R.begin(); c!= R.end(); ++c){
+			cout << c[0].as<int>() << " ";
+			cout << c[1].as<int>() << " ";
+			cout << c[2].as<int>() << " ";
+			cout << c[3].as<string>() << " ";
+			cout << c[4].as<string>() << " ";
+			cout << c[5].as<int>() << " ";
+			cout << c[6].as<int>() << " ";
+			cout << c[7].as<int>() << " ";
+			cout << c[8].as<int>() << " ";
+			cout << c[9].as<double>() << " ";
+			cout << c[10].as<double>() << endl;
+		}
+	} catch (const std::exception &e) {
+    	cerr << e.what() << std::endl;
+	}
 }
 
 
 void query2(connection *C, string team_color) {
+	try {
+		nontransaction N(*C);
+		stringstream sql;
+		sql << "SELECT TEAM.NAME" \
+			<< "FROM TEAM, COLOR" \
+			<< "WHERE TEAM.COLOR_ID=COLOR.COLOR_ID AND COLOR.NAME = '" << N.esc(team_color) << "';";
+
+		result r = N.exec(sql.str());
 
 
 
+		cout << "NAME" <<endl;
+		for(result::const_iterator c = r.begin(); c != r.end(); ++c){
+			cout << c[0].as<string>() <<endl;
+		}
+
+	} catch (const std::exception &e) {
+    	cerr << e.what() << std::endl;
+	}
 }
 
 
 void query3(connection *C, string team_name) {
+	try {
+		nontransaction N(*C);
+		stringstream sql;
+		sql << "SELECT FIRST_NAME, LAST_NAME " \
+			<< "FROM PLAYER, TEAM " \
+			<< "WHERE PLAYER.TEAM_ID = TEAM.TEAM_ID AND NAME ='"<< N.esc(team_name) <<"' " \
+			<< "ORDER BY PPG DESC;";
+		result r = N.exec(sql.str());
 
+		cout << "FIRST_NAME LAST_NAME" <<endl;
+		for(result::const_iterator c = r.begin(); c != r.end(); ++c) {
+			cout << c[0].as<string>() << " " << c[1].as<string>() << endl;
+		}
+
+
+	} catch (const std::exception &e) {
+    	cerr << e.what() << std::endl;
+	}
 
 }
 
 
 void query4(connection *C, string team_state, string team_color) {
+	try {
+		nontransaction N(*C);
+		stringstream sql;
+		sql << "SELECT FIRST_NAME, LAST_NAME, UNIFORM_NUM " \
+			<< "FROM PLAYER, TEAM, STATE, COLOR" \
+			<< "WHERE PLAYER.TEAM_ID=TEAM.TEAM_ID AND TEAM.COLOR_ID=COLOR.COLOR_ID AND TEAM.STATE_ID=STATE.STATE_ID " \
+			<< "AND STATE.NAME='"<< N.esc(team_state) <<"' AND COLOR.NAME='"<< N.esc(team_color) <<"';";
 
+		result r = N.exec(sql.str());
+		
+		cout << "FIRST_NAME LAST_NAME UNIFORM_NUM" << endl;
+		for(result::const_iterator c = r.begin(); c != r.end(); ++c) {
+			cout << c[0].as<string>() << " " << c[1].as<string>() << " " << c[2].as<int>() << endl;
+		}
+
+	} catch (const std::exception &e) {
+    	cerr << e.what() << std::endl;
+	}
 
 
 }
 
 
 void query5(connection *C, int num_wins) {
+	try {
+		nontransaction N(*C);
+		stringstream sql;
+		sql << "SELECT FIRST_NAME, LAST_NAME, TEAM.NAME, WINS " \
+			<< "FROM PLAYER, TEAM " \
+			<< "WHERE PLAYER.TEAM_ID=TEAM.TEAM_ID AND WINS > " << num_wins << ";";
 
+		result r = N.exec(sql.str());
 
+		cout << "FIRST_NAME LAST_NAME NAME WINS" <<endl; 
+		for(result::const_iterator c = r.begin(); c != r.end(); ++c) {
+			cout << c[0].as<string>() << " " \
+				 << c[1].as<string>() << " " \
+				 << c[2].as<string>() << " " \
+				 << c[3].as<int>() << endl;
+		}
 
+	} catch (const std::exception &e) {
+    	cerr << e.what() << std::endl;
+	}
 }
+
+
+
+
