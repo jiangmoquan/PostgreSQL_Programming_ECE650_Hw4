@@ -59,7 +59,7 @@ void query1(connection *C,
 	try {
 		nontransaction N(*C);
 		stringstream sql;
-		boolean first_condition = true;
+		bool first_condition = true;
 		
 		sql << "SELECT * FROM PLAYER ";
 
@@ -125,7 +125,7 @@ void query1(connection *C,
 
 
 		cout << "PLAYER_ID TEAM_ID UNIFORM_NUM FIRST_NAME LAST_NAME MPG PPG RPG APG SPG BPG" <<endl;
-		for(result::const_iterator c = R.begin(); c!= R.end(); ++c){
+		for(result::const_iterator c = r.begin(); c!= r.end(); ++c){
 			cout << c[0].as<int>() << " ";
 			cout << c[1].as<int>() << " ";
 			cout << c[2].as<int>() << " ";
