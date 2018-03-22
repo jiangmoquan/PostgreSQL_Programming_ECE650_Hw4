@@ -15,7 +15,7 @@ void DropTables(connection *C) {
   work W(*C);
   W.exec(drop_sql);
   W.commit();
-  cout << "Exsiting tables have been dropped." << endl;
+  //cout << "Exsiting tables have been dropped." << endl;
 }
 
 
@@ -56,7 +56,7 @@ void CreateTables(connection *C) {
   W.exec(create_player_sql);
   W.commit();
 
-  cout << "Create tables successfully." << endl;
+  //cout << "Create tables successfully." << endl;
 }
 
 
@@ -139,7 +139,7 @@ void LoadFiles(connection *C) {
   LoadColorFile(C);
   LoadTeamFile(C);
   LoadPlayerFile(C);
-  cout << "Load files successfully." << endl;
+  //cout << "Load files successfully." << endl;
 }
 
 
