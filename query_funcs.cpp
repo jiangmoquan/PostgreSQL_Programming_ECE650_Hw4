@@ -135,8 +135,8 @@ void query1(connection *C,
 			cout << c[6].as<int>() << " ";
 			cout << c[7].as<int>() << " ";
 			cout << c[8].as<int>() << " ";
-			cout << c[9].as<double>() << " ";
-			cout << c[10].as<double>() << endl;
+			cout << setiosflags(ios::fixed) << setprecision(1) << c[9].as<double>() << " ";
+			cout << setiosflags(ios::fixed) << setprecision(1) << c[10].as<double>() << endl;
 		}
 	} catch (const std::exception &e) {
     	cerr << e.what() << std::endl;
@@ -148,8 +148,8 @@ void query2(connection *C, string team_color) {
 	try {
 		nontransaction N(*C);
 		stringstream sql;
-		sql << "SELECT TEAM.NAME" \
-			<< "FROM TEAM, COLOR" \
+		sql << "SELECT TEAM.NAME " \
+			<< "FROM TEAM, COLOR " \
 			<< "WHERE TEAM.COLOR_ID=COLOR.COLOR_ID AND COLOR.NAME = '" << N.esc(team_color) << "';";
 
 		result r = N.exec(sql.str());
@@ -195,7 +195,7 @@ void query4(connection *C, string team_state, string team_color) {
 		nontransaction N(*C);
 		stringstream sql;
 		sql << "SELECT FIRST_NAME, LAST_NAME, UNIFORM_NUM " \
-			<< "FROM PLAYER, TEAM, STATE, COLOR" \
+			<< "FROM PLAYER, TEAM, STATE, COLOR " \
 			<< "WHERE PLAYER.TEAM_ID=TEAM.TEAM_ID AND TEAM.COLOR_ID=COLOR.COLOR_ID AND TEAM.STATE_ID=STATE.STATE_ID " \
 			<< "AND STATE.NAME='"<< N.esc(team_state) <<"' AND COLOR.NAME='"<< N.esc(team_color) <<"';";
 
